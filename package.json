@@ -1,0 +1,28 @@
+{
+  "name": "pattylink",
+  "version": "0.0.0",
+  "description": "Another aka.ms",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "npm run tsc",
+    "tsc": "tsc -p tsconfig.json",
+    "dev": "tsc --watch & NODE_ENV=development nodemon dist",
+    "test": "tsc && ./node_modules/.bin/mocha dist/**/*.spec.js",
+    "lint": "tslint 'src/**/*.ts' --fix",
+    "clean": "rm -rf dist/ .logs/",
+    "start": "node dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4",
+    "path": "^0.12.7",
+    "tsc": "^2.0.4",
+    "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.3"
+  }
+}
