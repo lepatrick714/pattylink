@@ -36,7 +36,16 @@ export default class Locals {
     // const redisPrefix = process.env.REDIS_QUEUE_DB || "q";
     // const redisDB = process.env.REDIS_QUEUE_PREFIX || 3;
 
+    const db_name = process.env.DB_NAME;
+    const db_username = process.env.DB_USERNAME;
+    const db_password = process.env.DB_PASSWORD;
+
     return {
+      //db details
+      db_name,
+      db_username,
+      db_password,
+
       appSecret,
       apiPrefix,
       company,

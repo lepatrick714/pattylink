@@ -37,6 +37,8 @@ class App {
 		Log.info('Server :: Booting @ Master...');
 
 		Express.init();
+
+		Log.info('Server initialized...');
 	}
 
 	// // Loads the Database Pool

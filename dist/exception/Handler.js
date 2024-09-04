@@ -4,9 +4,12 @@
  *
  * @author Faiz A. Farooqui <faiz@geekyants.com>
  */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Log = console;
-const Locals_1 = require("../providers/Locals");
+const Locals_1 = __importDefault(require("../providers/Locals"));
 class Handler {
     /**
      * Handles all the not found routes

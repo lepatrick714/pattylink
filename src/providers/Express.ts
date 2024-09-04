@@ -1,5 +1,8 @@
-import * as express from "express";
+import express from "express";
 import Locals from "./Locals";
+import Routes from "./Routes";
+
+import MiddlewareApp from "../middlewares/index";
 
 import ExceptionHandler from "../exception/Handler";
 
@@ -8,10 +11,25 @@ class Express {
   public express: express.Application;
 
   constructor() {
+    console.log("Express :: Booting...");
     this.express = express();
     this.mountDotEnv();
-    // this.mountMiddlewares();
-    // this.mountRoutes();
+    this.mountMiddlewares();
+    this.mountRoutes();
+  }
+
+  /**
+   * Mounts all the defined middlewares
+   */
+  private mountMiddlewares(): void {
+    this.express = MiddlewareApp.init(this.express);
+  }
+
+  /**
+   * Mounts all the defined routes
+   */
+  private mountRoutes(): void {
+    this.express = Routes.mountApi(this.express);
   }
 
   /**

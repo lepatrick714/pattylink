@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class AppController {
     /** Default index method */
     static index(_req, res) {
-        res.json('Hello World');
+        res.json({ message: "Hello World", success: true });
     }
 }
 exports.default = AppController;

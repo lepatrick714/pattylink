@@ -1,14 +1,32 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const Locals_1 = require("./Locals");
-const Handler_1 = require("../exception/Handler");
+const express_1 = __importDefault(require("express"));
+const Locals_1 = __importDefault(require("./Locals"));
+const Routes_1 = __importDefault(require("./Routes"));
+const index_1 = __importDefault(require("../middlewares/index"));
+const Handler_1 = __importDefault(require("../exception/Handler"));
 class Express {
     constructor() {
-        this.express = express();
+        console.log("Express :: Booting...");
+        this.express = (0, express_1.default)();
         this.mountDotEnv();
-        // this.mountMiddlewares();
-        // this.mountRoutes();
+        this.mountMiddlewares();
+        this.mountRoutes();
+    }
+    /**
+     * Mounts all the defined middlewares
+     */
+    mountMiddlewares() {
+        this.express = index_1.default.init(this.express);
+    }
+    /**
+     * Mounts all the defined routes
+     */
+    mountRoutes() {
+        this.express = Routes_1.default.mountApi(this.express);
     }
     /**
      * Starts the express server
