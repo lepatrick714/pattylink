@@ -38,7 +38,6 @@ class Log {
   public error(_string: string): void {
     // Line break and show the first line
     console.log("\x1b[31m%s\x1b[0m", "[ERROR] :: " + _string.split(/r?\n/)[0]);
-
     this.addLog("ERROR", _string);
   }
 
@@ -55,48 +54,61 @@ class Log {
     const _that = this;
     _kind = _kind.toUpperCase();
 
-    fs.open(
-      `${_that.baseDir}${_that.fileName}`,
-      "a",
-      (_err, _fileDescriptor) => {
-        if (!_err && _fileDescriptor) {
-          // Append to file and close it
-          fs.appendFile(
-            _fileDescriptor,
-            `${_that.linePrefix} [${_kind}] ${_string}\n`,
-            (_err) => {
-              if (!_err) {
-                fs.close(_fileDescriptor, (_err) => {
-                  if (!_err) {
-                    return true;
-                  } else {
-                    return console.log(
-                      "\x1b[31m%s\x1b[0m",
-                      "Error closing log file that was being appended"
-                    );
-                  }
-                });
-              } else {
-                return console.log(
-                  "\x1b[31m%s\x1b[0m",
-                  "Error appending to the log file"
-                );
-              }
+    const filepath = `${_that.baseDir}${_that.fileName}`;
+        
+    // Check if the directory exists
+    if (!fs.existsSync(_that.baseDir)) {
+      fs.mkdirSync(_that.baseDir);
+      console.log("folder created");
+    }
+    
+    // Check if the file exists
+    if (!fs.existsSync(filepath)) {
+      // Create the file if it doesn't exist
+      fs.writeFileSync(filepath, "", "utf8");
+      console.log("File created");
+    }
+
+    fs.open(filepath, "w", (_err, _fileDescriptor) => {
+      if (!_err && _fileDescriptor) {
+        // Append to file and close it
+        fs.appendFile(
+          _fileDescriptor,
+          `${_that.linePrefix} [${_kind}] ${_string}\n`,
+          (_err) => {
+            if (!_err) {
+              fs.close(_fileDescriptor, (_err) => {
+                if (!_err) {
+                  return true;
+                } else {
+                  return console.log(
+                    "\x1b[31m%s\x1b[0m",
+                    "Error closing log file that was being appended"
+                  );
+                }
+              });
+            } else {
+              return console.log(
+                "\x1b[31m%s\x1b[0m",
+                "Error appending to the log file"
+              );
             }
-          );
-        } else {
-          return console.log(
-            "\x1b[31m%s\x1b[0m",
-            "Error cloudn't open the log file for appending"
-          );
-        }
+          }
+        );
+      } else {
+        // Create the file
+
+        return console.log(
+          "\x1b[31m%s\x1b[0m",
+          "Error cloudn't open the log file for appending"
+        );
       }
-    );
+    });
   }
 
   /**
    * Deletes the log files older than 'X' days
-   * 
+   *
    * TODO: Implement this method
    *
    * Note: 'X' is defined in .env file

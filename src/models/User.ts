@@ -1,4 +1,4 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import bcrypt from "bcrypt";
 import Database from "../providers/Database"; // Import your configured Sequelize instance
 
@@ -8,64 +8,32 @@ export interface Tokens {
   tokenSecret?: String;
 }
 
-export interface IUser {
-  email: String;
-  password: String;
-  passwordResetToken: String;
-  passwordResetExpires: Date;
+export class IUserModel extends Model {
+  public email: string;
+  public password: string;
+  public passwordResetToken: string;
+  public passwordResetExpires: string;
+  public facebook: string;
+  public twitter: string;
+  public google: string;
+  public github: string;
+  public instagram: string;
+  public linkedin: string;
+  public tokens: string;
+  public steam: string;
+  public fullname: string;
+  public gender: string;
+  public geolocation: string;
+  public website: string;
+  public picture: string;
 
-  facebook: String;
-  twitter: String;
-  google: String;
-  github: String;
-  instagram: String;
-  linkedin: String;
-  tokens: Tokens[];
-  steam: String;
-
-  fullname: String;
-  gender: String;
-  geolocation: String;
-  website: String;
-  picture: String;
+  public async comparePassword(inputtedPassword: string): Promise<boolean> {
+    return bcrypt.compare(inputtedPassword, this.password);
+  }
 }
-
-export interface IUserModel extends Model, IUser {
-  comparePassword(password: string): Promise<boolean>;
-  validPassword(password: String, cb: any): String;
-  gravatar(_size: number): String;
-}
-
-import Locals from "../providers/Locals";
-
-const dbName = Locals.config().db_name;
-const username = Locals.config().db_username;
-const password = Locals.config().db_password;
-
-// Create a new Sequelize instance
-const sq = new Sequelize(dbName, username, password, {
-  host: "localhost",
-  dialect: "mysql", // or 'mariadb', 'postgres', etc.
-  logging: false, // Disable logging or provide a custom logger function
-  dialectOptions: {
-    // Optional: additional options for the dialect
-  },
-});
-
-// Define the model
-// class User extends Model<IUserModel> implements IUserModel {
-//   public username!: string;
-//   public email!: string;
-//   public password!: string;
-
-//   // Define the custom method
-//   public async comparePassword(password: string): Promise<boolean> {
-//     return bcrypt.compare(password, this.password);
-//   }
-// }
 
 // Define the User Schema
-const User = sq.define<IUserModel>(
+const User = Database.define<IUserModel>(
   "user",
   {
     email: { type: DataTypes.STRING, unique: true },
@@ -107,11 +75,5 @@ User.beforeSave(async (user) => {
     throw new Error("Error hashing password");
   }
 });
-
-
-// // Compare the passed password with the value in the database
-// export const comparePassword = async (candidatePassword: String) => {
-//   return await bcrypt.compare(candidatePassword, this.password);
-// };
 
 export default User;

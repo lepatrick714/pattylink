@@ -8,36 +8,41 @@ import ExceptionHandler from "../exception/Handler";
 
 class Express {
   // Static singleton instance
-  public express: express.Application;
+  public static express: express.Application;
 
-  constructor() {
-    console.log("Express :: Booting...");
-    this.express = express();
-    this.mountDotEnv();
-    this.mountMiddlewares();
-    this.mountRoutes();
+  public static getApp() {
+    if (!this.express) {
+      this.init();
+    }
+    return this.express;
   }
 
   /**
    * Mounts all the defined middlewares
    */
-  private mountMiddlewares(): void {
+  private static mountMiddlewares(): void {
     this.express = MiddlewareApp.init(this.express);
   }
 
   /**
    * Mounts all the defined routes
    */
-  private mountRoutes(): void {
+  private static mountRoutes(): void {
     this.express = Routes.mountApi(this.express);
+    console.log("Routes mounted");
   }
 
   /**
    * Starts the express server
    */
-  public init(): any {
-    const port: number = Locals.config().port;
+  public static init(): any {
+    this.express = express();
 
+    Express.mountDotEnv();
+    Express.mountMiddlewares();
+    Express.mountRoutes();
+
+    const port: number = Locals.config().port;
     // Registering Exception / Error Handlers
     this.express.use(ExceptionHandler.logErrors);
     this.express.use(ExceptionHandler.clientErrorHandler);
@@ -57,9 +62,9 @@ class Express {
       });
   }
 
-  private mountDotEnv(): void {
+  private static mountDotEnv(): void {
     this.express = Locals.init(this.express);
   }
 }
 
-export default new Express();
+export default Express.getApp();

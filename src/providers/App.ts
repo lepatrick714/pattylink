@@ -36,7 +36,7 @@ class App {
 	public loadServer (): void {
 		Log.info('Server :: Booting @ Master...');
 
-		Express.init();
+		console.log("express: ", Express);
 
 		Log.info('Server initialized...');
 	}

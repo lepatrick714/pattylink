@@ -25,6 +25,7 @@ export default class Locals {
     const isCORSEnabled = process.env.CORS_ENABLED || true;
     const jwtExpiresIn = process.env.JWT_EXPIRES_IN || 3;
     const apiPrefix = process.env.API_PREFIX || "api";
+    const apiVersion = process.env.API_VERSION || "v0";
 
     // const logDays = process.env.LOG_DAYS || 10;
 
@@ -48,16 +49,19 @@ export default class Locals {
 
       appSecret,
       apiPrefix,
+      apiVersion,
+
       company,
       copyright,
       description,
+
       isCORSEnabled,
       jwtExpiresIn,
       keywords,
       //   logDays,
       maxUploadLimit,
       maxParameterLimit,
-      mongooseUrl,
+      // mongooseUrl,
       name,
       port,
       //   redisDB,

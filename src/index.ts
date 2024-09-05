@@ -1,3 +1,4 @@
-import App from './providers/App';
+import App from './providers/App'; 
 
+App.loadConfiguration(); 
 App.loadServer();

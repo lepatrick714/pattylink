@@ -30,7 +30,6 @@ class MiddlewareApp {
     // _express = CsrfToken.mount(_express);
 
     // Mount view engine middleware
-    console.log("Views.mount(_express)", Views.mount(_express));
     _express = Views.mount(_express);
 
     // Mount statics middleware
